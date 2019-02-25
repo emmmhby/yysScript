@@ -206,7 +206,7 @@ func jiesuan_touch(){
 		timer.Reset(time.Second*10)
 		_, _, err := r.PostJSON(fmt.Sprintf("http://%s/session/%s/wda/doubleTap", ip, res2.SessionID), map[string]interface{}{
 			"y":        jump.Random(80, 230),
-			"x":        jump.Random(220, 560),
+			"x":        jump.Random(30, 90),
 		})
 		if err != nil {
 			log.Fatal("WebDriverAgentRunner 连接失败，请参考 https://github.com/faceair/youjumpijump/issues/71")
