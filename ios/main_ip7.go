@@ -181,8 +181,8 @@ func hunshi_touch(){
 		timer.Reset(time.Second*60)
 		pic = nil
 		_, _, err := r.PostJSON(fmt.Sprintf("http://%s/session/%s/wda/tap/0", ip, res.SessionID), map[string]interface{}{
-			"x":        jump.Random(212, 241),
-			"y":        jump.Random(942, 1046),
+			"y":        jump.Random(244, 269),
+			"x":        jump.Random(470, 527),
 		})
 		if err != nil {
 			log.Fatal("WebDriverAgentRunner 连接失败，请参考 https://github.com/faceair/youjumpijump/issues/71")
@@ -205,8 +205,8 @@ func jiesuan_touch(){
 		log.Println(count)
 		timer.Reset(time.Second*10)
 		_, _, err := r.PostJSON(fmt.Sprintf("http://%s/session/%s/wda/doubleTap", ip, res2.SessionID), map[string]interface{}{
-			"x":        jump.Random(80, 230),
-			"y":        jump.Random(220, 560),
+			"y":        jump.Random(80, 230),
+			"x":        jump.Random(220, 560),
 		})
 		if err != nil {
 			log.Fatal("WebDriverAgentRunner 连接失败，请参考 https://github.com/faceair/youjumpijump/issues/71")
