@@ -71,13 +71,12 @@ func hunshi_screenshot(ip string) (*ScreenshotRes, image.Image) {
 
 	pic, err := png.Decode(bytes.NewReader(pngValue))
 	rgbimage := pic.(*image.RGBA)
-	subimage := rgbimage.SubImage(image.Rect(524,434,564,689)).(*image.RGBA)
+	subimage := rgbimage.SubImage(image.Rect(620,510,653,800)).(*image.RGBA)
 	if err != nil {
 		log.Fatal("图片解码失败，请参考 https://github.com/faceair/youjumpijump/issues/41")
 	}
 	return res, subimage
 }
-
 func jiesuan_screenshot(ip string) (*ScreenshotRes, image.Image) {
 	_, body, err := r.Get(fmt.Sprintf("http://%s/screenshot", ip))
 	if err != nil {
@@ -97,7 +96,7 @@ func jiesuan_screenshot(ip string) (*ScreenshotRes, image.Image) {
 
 	pic, err := png.Decode(bytes.NewReader(pngValue))
 	rgbimage := pic.(*image.RGBA)
-	subimage := rgbimage.SubImage(image.Rect(90,470,260,679)).(*image.RGBA)
+	subimage := rgbimage.SubImage(image.Rect(115,566,310,770)).(*image.RGBA)
 	if err != nil {
 		log.Fatal("图片解码失败，请参考 https://github.com/faceair/youjumpijump/issues/41")
 	}
@@ -155,18 +154,17 @@ func xuanshang_screenshot(ip string) (*ScreenshotRes, image.Image) {
 }
 func xuanshang_touch(){
 	res3, pic := xuanshang_screenshot(ip)
-	jump.SavePNG("jump.png", pic)
-	cos3,_err:= imgo.CosineSimilarity("jump.png","SE_xuanshang.png")
+	jump.SavePNG("IP7_jump.png", pic)
+	cos3,_err:= imgo.CosineSimilarity("IP7_jump.png","SE_xuanshang.png")
 	cos3_1w:=cos3*10000
 	if _err!=nil{
 		println(_err.Error())
 	}
 	if(cos3_1w>9500.0){
 		log.Println(cos3_1w)
-		_, _, err := r.PostJSON(fmt.Sprintf("http://%s/session/%s/wda/touchAndHold", ip, res3.SessionID), map[string]interface{}{
+		_, _, err := r.PostJSON(fmt.Sprintf("http://%s/session/%s/wda/tap/0", ip, res3.SessionID), map[string]interface{}{
 			"x":        jump.Random(164, 194),
 			"y":        jump.Random(750, 886),
-			"duration": distance * 2 / 10000,
 		})
 		if err != nil {
 			log.Fatal("WebDriverAgentRunner 连接失败，请参考 https://github.com/faceair/youjumpijump/issues/71")
@@ -175,17 +173,16 @@ func xuanshang_touch(){
 }
 func hunshi_touch(){
 	res, pic := hunshi_screenshot(ip)
-	jump.SavePNG("jump.png", pic)
-	cos1,_ := imgo.CosineSimilarity("jump.png","SE_hunshi.png")
+	jump.SavePNG("IP7_jump.png", pic)
+	cos1,_ := imgo.CosineSimilarity("IP7_jump.png","IP7_hunshi.png")
 	cos1_1w:=cos1*10000
-	if(cos1_1w>9900.0){
+	if(cos1_1w>9998.0){
 		log.Println(cos1_1w)
 		timer.Reset(time.Second*60)
 		pic = nil
-		_, _, err := r.PostJSON(fmt.Sprintf("http://%s/session/%s/wda/touchAndHold", ip, res.SessionID), map[string]interface{}{
-			"x":        jump.Random(188, 215),
-			"y":        jump.Random(800, 900),
-			"duration": distance / 10000,
+		_, _, err := r.PostJSON(fmt.Sprintf("http://%s/session/%s/wda/tap/0", ip, res.SessionID), map[string]interface{}{
+			"x":        jump.Random(212, 241),
+			"y":        jump.Random(942, 1046),
 		})
 		if err != nil {
 			log.Fatal("WebDriverAgentRunner 连接失败，请参考 https://github.com/faceair/youjumpijump/issues/71")
@@ -199,28 +196,22 @@ func hunshi_touch(){
 }
 func jiesuan_touch(){
 	res2, pic := jiesuan_screenshot(ip)
-	jump.SavePNG("jump.png", pic)
-	cos2,_ := imgo.CosineSimilarity("jump.png","SE_jiesuan.png")
+	jump.SavePNG("IP7_jump.png", pic)
+	cos2,_ := imgo.CosineSimilarity("IP7_jump.png","IP7_jiesuan.png")
 	cos2_1w:=cos2*10000
 	if(cos2_1w>9900.0){
 		count++;
 		log.Println(cos2_1w)
 		log.Println(count)
 		timer.Reset(time.Second*10)
-		_, _, err := r.PostJSON(fmt.Sprintf("http://%s/session/%s/wda/touchAndHold", ip, res2.SessionID), map[string]interface{}{
-			"x":        jump.Random(165, 380),
-			"y":        jump.Random(950, 1100),
-			"duration": distance / 10000,
+		_, _, err := r.PostJSON(fmt.Sprintf("http://%s/session/%s/wda/doubleTap", ip, res2.SessionID), map[string]interface{}{
+			"x":        jump.Random(80, 230),
+			"y":        jump.Random(220, 560),
 		})
 		if err != nil {
 			log.Fatal("WebDriverAgentRunner 连接失败，请参考 https://github.com/faceair/youjumpijump/issues/71")
 		}
 		time.Sleep(time.Millisecond *  1000)
-		_, _, err = r.PostJSON(fmt.Sprintf("http://%s/session/%s/wda/touchAndHold", ip, res2.SessionID), map[string]interface{}{
-			"x":        jump.Random(165, 380),
-			"y":        jump.Random(950, 1100),
-			"duration": distance / 10000,
-		})
 		touch_flag = true
 		touch_count = 0
 	}
