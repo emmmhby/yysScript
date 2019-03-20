@@ -146,7 +146,7 @@ func xuanshang_screenshot(ip string) (*ScreenshotRes, image.Image) {
 
 	pic, err := png.Decode(bytes.NewReader(pngValue))
 	rgbimage := pic.(*image.RGBA)
-	subimage := rgbimage.SubImage(image.Rect(458,440,525,695)).(*image.RGBA)
+	subimage := rgbimage.SubImage(image.Rect(530,514,619,817)).(*image.RGBA)
 	if err != nil {
 		log.Fatal("图片解码失败，请参考 https://github.com/faceair/youjumpijump/issues/41")
 	}
@@ -155,7 +155,7 @@ func xuanshang_screenshot(ip string) (*ScreenshotRes, image.Image) {
 func xuanshang_touch(){
 	res3, pic := xuanshang_screenshot(ip)
 	jump.SavePNG("IP7_jump.png", pic)
-	cos3,_err:= imgo.CosineSimilarity("IP7_jump.png","SE_xuanshang.png")
+	cos3,_err:= imgo.CosineSimilarity("IP7_jump.png","IP7_xuanshang.png")
 	cos3_1w:=cos3*10000
 	if _err!=nil{
 		println(_err.Error())
@@ -163,8 +163,8 @@ func xuanshang_touch(){
 	if(cos3_1w>9500.0){
 		log.Println(cos3_1w)
 		_, _, err := r.PostJSON(fmt.Sprintf("http://%s/session/%s/wda/tap/0", ip, res3.SessionID), map[string]interface{}{
-			"x":        jump.Random(164, 194),
-			"y":        jump.Random(750, 886),
+			"y":        jump.Random(260, 280),
+			"x":        jump.Random(439, 500),
 		})
 		if err != nil {
 			log.Fatal("WebDriverAgentRunner 连接失败，请参考 https://github.com/faceair/youjumpijump/issues/71")
@@ -239,7 +239,7 @@ func main() {
 			log.Fatal("WebDriverAgentRunner 连接失败，请参考 https://github.com/faceair/youjumpijump/issues/71")
 		}
 	}
-
+	touch_flag = true
 	for {
 		jump.Debugger()
 
