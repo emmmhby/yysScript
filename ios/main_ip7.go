@@ -23,11 +23,21 @@ var ip string
 var touch_count = 0;
 var touch_flag = true;
 var count = 0;
+var fubenModel = ""
 var distance = 0.01
 type ScreenshotRes struct {
 	Value     string `json:"value"`
 	SessionID string `json:"sessionId"`
 	Status    int    `json:"status"`
+}
+func fubenSelect(model string)(string){
+	if model == "1"{
+		return  "hunshi"
+	}else if model == "2" {
+		return  "yuling"
+	}else {
+		return "unknown"
+	}
 }
 func screenshot(ip string) (*ScreenshotRes, image.Image) {
 	_, body, err := r.Get(fmt.Sprintf("http://%s/screenshot", ip))
@@ -171,10 +181,10 @@ func xuanshang_touch(){
 		}
 	}
 }
-func hunshi_touch(){
+func fuben_touch(){
 	res, pic := hunshi_screenshot(ip)
 	jump.SavePNG("IP7_jump.png", pic)
-	cos1,_ := imgo.CosineSimilarity("IP7_jump.png","IP7_hunshi.png")
+	cos1,_ := imgo.CosineSimilarity("IP7_jump.png","IP7_"+fubenModel+".png")
 	cos1_1w:=cos1*10000
 	if(cos1_1w>9998.0){
 		log.Println(cos1_1w)
@@ -239,6 +249,16 @@ func main() {
 			log.Fatal("WebDriverAgentRunner 连接失败，请参考 https://github.com/faceair/youjumpijump/issues/71")
 		}
 	}
+	var fubenInput =""
+	fmt.Print("1.魂十业原火\n2.御灵\n请输入数字选择副本:")
+	fmt.Scanln(&fubenInput)
+	if fubenInput == "" {
+		log.Fatal("未选择副本，退出")
+	}
+	fubenModel = fubenSelect(fubenInput)
+	if fubenModel == "unknown"{
+		log.Fatal("未知副本，退出")
+	}
 	touch_flag = true
 	for {
 		jump.Debugger()
@@ -248,7 +268,7 @@ func main() {
 		//}
 
 		if touch_flag == true{
-			hunshi_touch()
+			fuben_touch()
 		}
 
 		if touch_flag == false {
